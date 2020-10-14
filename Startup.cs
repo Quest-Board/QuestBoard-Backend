@@ -53,7 +53,7 @@ namespace QuestBoard_Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<KanbanHub>("/board");
+                endpoints.MapHub<KanbanHub>("/ws/board");
             });
         }
     }
