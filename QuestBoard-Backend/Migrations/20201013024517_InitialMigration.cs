@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace QuestBoard_Backend.Migrations
+namespace QuestBoard.Migrations
 {
     public partial class InitialMigration : Migration
     {

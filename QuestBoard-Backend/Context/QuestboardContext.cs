@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using QuestBoard_Backend.Models.UserModels;
+using QuestBoard.Models.UserModels;
 
-namespace QuestBoard_Backend.Context
+namespace QuestBoard.Context
 {
     public class QuestboardContext : IdentityDbContext<User>
     {

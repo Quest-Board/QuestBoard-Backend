@@ -2,18 +2,16 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using QuestBoard_Backend.Context;
+using QuestBoard.Context;
 
-namespace QuestBoard_Backend.Migrations
+namespace QuestBoard.Migrations
 {
     [DbContext(typeof(QuestboardContext))]
-    [Migration("20201013024517_InitialMigration")]
-    partial class InitialMigration
+    partial class QuestboardContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
