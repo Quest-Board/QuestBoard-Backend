@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuestBoard_Backend.Models.UserModels;
+using QuestBoard.Models.UserModels;
 
-namespace Questboard_Backend.Tests
+namespace QuestBoard.Tests
 {
     [TestClass]
     public class UnitTest1

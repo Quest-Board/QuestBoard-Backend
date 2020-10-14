@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace QuestBoard_Backend.Models.UserModels
+namespace QuestBoard.Models.UserModels
 {
     public class User : IdentityUser
     {

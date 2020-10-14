@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
-using QuestBoard_Backend.Context;
+using QuestBoard.Context;
 using System;
 using System.Threading.Tasks;
 
-namespace QuestBoard_Backend.Hubs
+namespace QuestBoard.Hubs
 {
     public class KanbanHub : Hub
     {
