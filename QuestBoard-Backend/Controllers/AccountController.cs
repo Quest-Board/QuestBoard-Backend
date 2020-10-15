@@ -16,17 +16,14 @@ namespace QuestBoard_Backend.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly QuestboardContext _context;
-
         private readonly ILogger<AccountController> _log;
 
         private readonly SignInManager<User> _signInManager;
 
         private readonly UserManager<User> _userManager;
 
-        public AccountController(QuestboardContext context, ILogger<AccountController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(ILogger<AccountController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
             _log = logger ?? throw new ArgumentNullException(nameof(logger));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
