@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuestBoard.Models.UserModels;
+using QuestBoard.Models;
 
 namespace QuestBoard.Tests
 {
