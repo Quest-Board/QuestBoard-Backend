@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuestBoard.Context;
 using QuestBoard.Hubs;
+using QuestBoard.Models;
 
 namespace QuestBoard
 {
@@ -34,6 +36,19 @@ namespace QuestBoard
                 options.Configuration = "localhost:6379";
                 //options.Configuration = Configuration.GetConnectionString("Redis");
             });
+
+            services.AddIdentity<User, IdentityRole>(opetions =>
+            {
+                opetions.Password = new PasswordOptions
+                {
+                    RequiredLength = 8,
+                    RequireNonAlphanumeric = false,
+                    RequiredUniqueChars = 1,
+                    RequireDigit = false,
+                    RequireLowercase = false,
+                    RequireUppercase = false,
+                };
+            }).AddEntityFrameworkStores<QuestboardContext>().AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +63,7 @@ namespace QuestBoard
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
