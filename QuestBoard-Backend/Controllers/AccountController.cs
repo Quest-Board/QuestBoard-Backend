@@ -12,7 +12,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace QuestBoard_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
