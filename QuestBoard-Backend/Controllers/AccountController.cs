@@ -83,9 +83,7 @@ namespace QuestBoard_Backend.Controllers
             if (result.Succeeded)
             {
                 _log.LogInformation("User {userName} was created.", model.Email);
-                //Bug: Remember browser option missing?
-                //Uncomment this and comment the later part if account verification is not needed.
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await _signInManager.SignInAsync(user, isPersistent: true);
 
                 return Ok(new { Success = true });
             }
