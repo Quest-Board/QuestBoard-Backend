@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuestBoard.Context;
@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace QuestBoard.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class BoardController : Controller
+    [ApiController]
+    public class BoardController : ControllerBase
     {
         private readonly QuestboardContext _context;
 
@@ -19,11 +20,6 @@ namespace QuestBoard.Controllers
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [Authorize]
