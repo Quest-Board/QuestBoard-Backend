@@ -17,7 +17,7 @@ namespace QuestBoard_Backend.Models.BoardModels
 
         public string BoardOwnerEmail { get; set; }
 
-        public ICollection<string> columns { get; set; }
+        public List<string> columns { get; set; }
 
         public virtual ICollection<User> TeamMembers { get; set; }
 
