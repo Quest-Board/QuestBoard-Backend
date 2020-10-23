@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace QuestBoard.Migrations
 {
-    public partial class boardmigration : Migration
+    public partial class BoardChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,15 +18,16 @@ namespace QuestBoard.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BoardOwnerEmail = table.Column<string>(nullable: true),
-                    columns = table.Column<List<string>>(nullable: true)
+                    BoardName = table.Column<string>(nullable: true),
+                    Columns = table.Column<string>(nullable: true),
+                    OwnerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Boards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Boards_AspNetUsers_BoardOwnerEmail",
-                        column: x => x.BoardOwnerEmail,
+                        name: "FK_Boards_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -39,10 +39,9 @@ namespace QuestBoard.Migrations
                 column: "BoardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Boards_BoardOwnerEmail",
+                name: "IX_Boards_OwnerId",
                 table: "Boards",
-                column: "BoardOwnerEmail",
-                unique: true);
+                column: "OwnerId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_Boards_BoardId",
