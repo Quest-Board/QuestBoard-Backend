@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using QuestBoard.Models;
-using QuestBoard_Backend.Models.BoardModels;
 
 namespace QuestBoard.Context
 {
