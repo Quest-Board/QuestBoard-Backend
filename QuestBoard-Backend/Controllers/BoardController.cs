@@ -51,6 +51,8 @@ namespace QuestBoard.Controllers
                 BoardName = BoardName
             };
 
+            _context.Boards.Add(board);
+
             _context.SaveChanges();
 
             return Ok(new { Success = true });
