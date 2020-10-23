@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using QuestBoard.Models;
 
-namespace QuestBoard_Backend.Models.BoardModels
+namespace QuestBoard.Models
 {
     public class Board
     {
