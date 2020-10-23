@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -91,6 +91,14 @@ namespace QuestBoard_Backend.Controllers
             }
 
             return UnprocessableEntity(model);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok(new { Success = true });
         }
 
         /*private Task<User> GetCurrentUserAsync()
