@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuestBoard.Context;
 using QuestBoard.Models;
 using QuestBoard_Backend.Models.BoardModels;
 
-namespace QuestBoard_Backend.Controllers
+namespace QuestBoard.Controllers
 {
-    [Route("api/[controller]/[method]")]
+    [Route("api/[controller]/[action]")]
     public class BoardController : Controller
     {
         private readonly QuestboardContext _context;
 
-        public BoardController(QuestboardContext context)
+        private readonly UserManager<User> _userManager;
+
+        public BoardController(QuestboardContext context, UserManager<User> userManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(context));
         }
 
         public IActionResult Index()
@@ -27,14 +31,14 @@ namespace QuestBoard_Backend.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(string OwnerEmail)
+        public async Task<IActionResult> CreateAsync(string BoardName)
         {
-            if (OwnerEmail == null)
+            if (BoardName == null)
             {
                 return BadRequest("Email is invalid or null");
             }
 
-            User user = _context.Users.Where(u => u.Email == OwnerEmail).FirstOrDefault();
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -43,7 +47,8 @@ namespace QuestBoard_Backend.Controllers
 
             Board board = new Board()
             {
-                BoardOwner = user
+                Owner = user,
+                BoardName = BoardName
             };
 
             _context.SaveChanges();

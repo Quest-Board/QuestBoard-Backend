@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QuestBoard.Context;
@@ -10,9 +11,10 @@ using QuestBoard.Context;
 namespace QuestBoard.Migrations
 {
     [DbContext(typeof(QuestboardContext))]
-    partial class QuestboardContextModelSnapshot : ModelSnapshot
+    [Migration("20201023052005_addnametoboard")]
+    partial class addnametoboard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,15 +231,13 @@ namespace QuestBoard.Migrations
                     b.Property<string>("BoardName")
                         .HasColumnType("text");
 
-                    b.Property<string>("BoardOwnerId")
-                        .HasColumnType("text");
-
                     b.Property<List<string>>("columns")
                         .HasColumnType("text[]");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoardOwnerId");
+                    b.HasIndex("BoardName")
+                        .IsUnique();
 
                     b.ToTable("Boards");
                 });
@@ -303,8 +303,8 @@ namespace QuestBoard.Migrations
             modelBuilder.Entity("QuestBoard_Backend.Models.BoardModels.Board", b =>
                 {
                     b.HasOne("QuestBoard.Models.User", "BoardOwner")
-                        .WithMany()
-                        .HasForeignKey("BoardOwnerId");
+                        .WithOne()
+                        .HasForeignKey("QuestBoard_Backend.Models.BoardModels.Board", "BoardName");
                 });
 #pragma warning restore 612, 618
         }

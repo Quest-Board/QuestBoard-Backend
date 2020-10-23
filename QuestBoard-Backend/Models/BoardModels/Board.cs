@@ -9,18 +9,18 @@ namespace QuestBoard_Backend.Models.BoardModels
     {
         public Board()
         {
-            TeamMembers = new List<User>();
+            Members = new List<User>();
         }
 
         [Key]
         public int Id { get; set; }
 
-        public string BoardOwnerEmail { get; set; }
+        public string BoardName { get; set; }
 
-        public List<string> columns { get; set; }
+        public List<string> Columns { get; set; }
 
-        public virtual ICollection<User> TeamMembers { get; set; }
+        public virtual ICollection<User> Members { get; set; }
 
-        public User BoardOwner { get; set; }
+        public User Owner { get; set; }
     }
 }
