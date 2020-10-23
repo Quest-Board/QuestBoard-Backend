@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuestBoard.Context;
 using QuestBoard.Models;
-using QuestBoard_Backend.Models.BoardModels;
 
 namespace QuestBoard.Controllers
 {
