@@ -78,15 +78,13 @@ namespace QuestBoard.Controllers
 
             if (board == null)
             {
-                Console.WriteLine("No board was found with id {id}", id);
                 return NotFound("No board with that ID exists");
             }
 
-            User ToAdd = _context.Users.Find(Email.Email);
+            User ToAdd = await _userManager.FindByEmailAsync(Email.Email);
 
             if (ToAdd == null)
             {
-                Console.WriteLine("No user was found with email {email}", Email.Email);
                 return NotFound("No user with that email exists");
             }
 
@@ -97,7 +95,15 @@ namespace QuestBoard.Controllers
                 return Forbid("Only the owner is permited to make changes");
             }
 
-            board.Members.Add(ToAdd);
+            MemberOf MemberOf = new MemberOf
+            {
+                MemberID = ToAdd.Id,
+                Member = ToAdd,
+                BoardId = board.Id,
+                Board = board
+            };
+
+            board.Members.Add(MemberOf);
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });

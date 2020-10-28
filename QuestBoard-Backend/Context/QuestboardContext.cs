@@ -14,6 +14,7 @@ namespace QuestBoard.Context
         public QuestboardContext(DbContextOptions<QuestboardContext> options) : base(options) { }
 
         public DbSet<Board> Boards { get; set; }
+        public DbSet<MemberOf> MemberOf { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,6 +22,18 @@ namespace QuestBoard.Context
             {
                 throw new ArgumentNullException(nameof(builder));
             }
+
+            builder.Entity<MemberOf>().HasKey(mb => new { mb.BoardId, mb.MemberID });
+
+            builder.Entity<MemberOf>()
+                .HasOne(u => u.Member)
+                .WithMany(s => s.Boards)
+                .HasForeignKey(t => t.MemberID);
+
+            builder.Entity<MemberOf>()
+                .HasOne(b => b.Board)
+                .WithMany(r => r.Members)
+                .HasForeignKey(t => t.BoardId);
 
             builder.Entity<Board>()
                 .Property(b => b.Columns)

@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace QuestBoard.Models
 {
-    public class User : IdentityUser { }
+    public class User : IdentityUser
+    {
+        public ICollection<MemberOf> Boards { get; set; }
+    }
 }

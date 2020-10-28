@@ -5,11 +5,6 @@ namespace QuestBoard.Models
 {
     public class Board
     {
-        public Board()
-        {
-            Members = new List<User>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -17,7 +12,7 @@ namespace QuestBoard.Models
 
         public List<string> Columns { get; set; }
 
-        public virtual ICollection<User> Members { get; set; }
+        public virtual ICollection<MemberOf> Members { get; set; }
 
         public User Owner { get; set; }
     }
