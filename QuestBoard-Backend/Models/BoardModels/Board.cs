@@ -10,7 +10,7 @@ namespace QuestBoard.Models
 
         public string BoardName { get; set; }
 
-        public List<string> Columns { get; set; }
+        public ICollection<Column> Columns { get; set; }
 
         public virtual ICollection<MemberOf> Members { get; set; }
 

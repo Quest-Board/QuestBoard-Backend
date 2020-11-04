@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using QuestBoard.Context;
 using QuestBoard.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuestBoard.Controllers
@@ -104,6 +106,104 @@ namespace QuestBoard.Controllers
             };
 
             board.Members.Add(MemberOf);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Success = true });
+        }
+
+        public class ColumnAddition
+        {
+            [Required]
+            public string Category { get; set; }
+
+            [Required]
+            public int BoardID { get; set; }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddColumnAsync([FromBody]ColumnAddition column)
+        {
+            Board board = await _context.Boards.FindAsync(column.BoardID);
+
+            if (board == null)
+            {
+                return NotFound("No board with that ID exists");
+            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            MemberOf memberOf = _context.MemberOf.ToList().Where(m => m.MemberID == user.Id && m.BoardId == board.Id).FirstOrDefault();
+
+            if (memberOf == null)
+            {
+                return Forbid("You are not a member of this board");
+            }
+
+            Column ToAdd = new Column()
+            {
+                Category = column.Category,
+            };
+
+            board.Columns.Add(ToAdd);
+            _context.SaveChanges();
+
+            return Ok(new { Success = true });
+        }
+
+        public class CardAddition
+        {
+            [Required]
+            public int BoardID { get; set; }
+
+            [Required]
+            public int ColumnID { get; set; }
+
+            [Required]
+            public string Title { get; set; }
+
+            [Required]
+            public string Description { get; set; }
+
+            public string AssigneeEmail { get; set; }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddCardToColumnAsync([FromBody]CardAddition card)
+        {
+            Column column = await _context.Columns.FindAsync(card.ColumnID);
+            Board board = await _context.Boards.FindAsync(card.BoardID);
+
+            if (column == null)
+            {
+                return NotFound("No column with that ID exists");
+            }
+
+            if (board == null)
+            {
+                return NotFound("No board with that ID exists");
+            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            MemberOf memberOf = _context.MemberOf.ToList().Where(m => m.MemberID == user.Id && m.BoardId == board.Id).FirstOrDefault();
+
+            if (memberOf == null)
+            {
+                return Forbid("You are not a member of this board");
+            }
+
+            User Assignee = await _userManager.FindByEmailAsync(card.AssigneeEmail);
+
+            Card toAdd = new Card()
+            {
+                Description = card.Description,
+                Title = card.Title,
+                Assigned = Assignee
+            };
+
+            column.Cards.Add(toAdd);
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
