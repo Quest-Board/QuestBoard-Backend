@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuestBoard.Context;
 using QuestBoard.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -207,6 +208,31 @@ namespace QuestBoard.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetBoardsAsync()
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            IEnumerable<Board> board = _context.Boards.ToList().Where(b => b.Owner == user);
+            return Ok(JsonConvert.SerializeObject(board));
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{id")]
+        public async Task<IActionResult> GetBoardInfoAsync(int id)
+        {
+            Board board = await _context.Boards.FindAsync(id);
+
+            if (board == null)
+            {
+                return NotFound("No board with that id exists");
+            }
+
+            return Ok(JsonConvert.SerializeObject(board));
         }
     }
 }
