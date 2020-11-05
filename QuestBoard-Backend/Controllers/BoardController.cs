@@ -223,7 +223,7 @@ namespace QuestBoard.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("{id")]
+        [Route("{id}")]
         public async Task<IActionResult> GetBoardInfoAsync(int id)
         {
             Board board = await _context.Boards.FindAsync(id);
