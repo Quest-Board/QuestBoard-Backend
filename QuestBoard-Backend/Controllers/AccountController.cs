@@ -97,6 +97,13 @@ namespace QuestBoard_Backend.Controllers
             return Ok(new { Success = true });
         }
 
+        [HttpGet]
+        [Authorize]
+        public IActionResult Check()
+        {
+            return Ok(new { Sucess = true });
+        }
+
         /*private Task<User> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
