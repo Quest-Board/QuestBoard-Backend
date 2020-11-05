@@ -217,6 +217,7 @@ namespace QuestBoard.Controllers
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             IEnumerable<Board> board = _context.Boards.ToList().Where(b => b.Owner == user);
+
             return Ok(JsonConvert.SerializeObject(board));
         }
 
@@ -230,6 +231,13 @@ namespace QuestBoard.Controllers
             if (board == null)
             {
                 return NotFound("No board with that id exists");
+            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+
+            if (board.Owner != user || board.Members.Any(u => u.MemberID == user.Id))
+            {
+                return Forbid("Not Allowed to Acccess this Board");
             }
 
             return Ok(JsonConvert.SerializeObject(board));
