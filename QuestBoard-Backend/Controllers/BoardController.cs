@@ -136,9 +136,9 @@ namespace QuestBoard.Controllers
 
             MemberOf memberOf = _context.MemberOf.ToList().Where(m => m.MemberID == user.Id && m.BoardId == board.Id).FirstOrDefault();
 
-            if (memberOf == null)
+            if (memberOf == null && board.Owner != user)
             {
-                return Forbid("You are not a member of this board");
+                return Forbid();
             }
 
             Column ToAdd = new Column()
