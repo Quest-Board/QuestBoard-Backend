@@ -5,6 +5,12 @@ namespace QuestBoard.Models
 {
     public class Board
     {
+        public Board()
+        {
+            Columns = new List<Column>();
+            Members = new List<MemberOf>();
+        }
+
         [Key]
         public int Id { get; set; }
 

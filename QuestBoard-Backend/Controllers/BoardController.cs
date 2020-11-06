@@ -49,7 +49,7 @@ namespace QuestBoard.Controllers
             Board board = new Board()
             {
                 Owner = user,
-                BoardName = BoardName
+                BoardName = BoardName,
             };
 
             _context.Boards.Add(board);
@@ -129,7 +129,7 @@ namespace QuestBoard.Controllers
 
             if (board == null)
             {
-                return NotFound("No board with that ID exists");
+                return NotFound(new { Success = false });
             }
 
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
@@ -141,13 +141,13 @@ namespace QuestBoard.Controllers
                 return Forbid();
             }
 
-            Column ToAdd = new Column()
+            Column ToAdd = new Column
             {
                 Category = column.Category,
             };
 
-            board.Columns.Add(ToAdd);
-            _context.SaveChanges();
+            board.Columns.Append(ToAdd);
+            await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
         }
