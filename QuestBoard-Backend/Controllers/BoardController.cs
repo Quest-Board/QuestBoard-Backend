@@ -36,7 +36,7 @@ namespace QuestBoard.Controllers
         {
             if (BoardName == null)
             {
-                return BadRequest("Email is invalid or null");
+                return BadRequest("Board name is invalid or null");
             }
 
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
@@ -56,7 +56,7 @@ namespace QuestBoard.Controllers
 
             _context.SaveChanges();
 
-            return Ok(new { Success = true });
+            return Ok(new { id = board.Id });
         }
 
         public class MemberEmail
