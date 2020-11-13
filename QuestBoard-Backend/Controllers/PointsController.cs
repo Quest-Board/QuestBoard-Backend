@@ -59,7 +59,7 @@ namespace QuestBoard.Controllers
                 return NotFound("No user with that email exists");
             }
 
-            user.Points += modification.Points;
+            user.Points -= modification.Points;
             _context.SaveChanges();
 
             return Ok(new { points = user.Points });
