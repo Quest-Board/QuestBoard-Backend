@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuestBoard.Context;
 using QuestBoard.Models;
 
-namespace QuestBoard_Backend.Controllers
+namespace QuestBoard.Controllers
 {
     [Route("api/[controller]/[action]")]
     public class PointsController : Controller
@@ -45,7 +45,7 @@ namespace QuestBoard_Backend.Controllers
             user.Points += modification.Points;
             _context.SaveChanges();
 
-            return Ok(new { Success = true });
+            return Ok(new { points = user.Points });
         }
 
         [HttpPost]
@@ -62,7 +62,7 @@ namespace QuestBoard_Backend.Controllers
             user.Points += modification.Points;
             _context.SaveChanges();
 
-            return Ok(new { Success = true });
+            return Ok(new { points = user.Points });
         }
     }
 }
