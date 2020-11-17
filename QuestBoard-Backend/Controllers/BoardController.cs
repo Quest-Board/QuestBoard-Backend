@@ -218,7 +218,7 @@ namespace QuestBoard.Controllers
 
             IEnumerable<MemberOf> memberOf = _context.MemberOf.Where(m => m.MemberID == user.Id);
 
-            IEnumerable<Board> board = _context.Boards.Where(b => b.Owner == user || b.Members.Contains(user));
+            IEnumerable<Board> board = _context.Boards.Where(b => b.Owner == user);
 
             foreach (MemberOf member in memberOf)
             {
