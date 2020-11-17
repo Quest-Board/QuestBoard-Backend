@@ -104,6 +104,14 @@ namespace QuestBoard_Backend.Controllers
             return Ok(new { Sucess = true });
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> StatsAsync()
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+            return Ok(new { email = user.Email, id = user.Id, points = user.Points, rank = user.Rank });
+        }
+
         /*private Task<User> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
