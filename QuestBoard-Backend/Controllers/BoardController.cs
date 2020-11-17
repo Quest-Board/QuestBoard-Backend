@@ -216,13 +216,13 @@ namespace QuestBoard.Controllers
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
-            IEnumerable<MemberOf> memberOf = _context.MemberOf.ToList().Where(m => m.MemberID == user.Id);
+            IEnumerable<MemberOf> memberOf = _context.MemberOf.Where(m => m.MemberID == user.Id);
 
-            IEnumerable<Board> board = _context.Boards.ToList().Where(b => b.Owner == user);
+            IEnumerable<Board> board = _context.Boards.Where(b => b.Owner == user || b.Members.Contains(user));
 
             foreach (MemberOf member in memberOf)
             {
-                board.Append(_context.Boards.ToList().Where(b => b.Id == member.BoardId).FirstOrDefault());
+                board.Append(_context.Boards.Where(b => b.Id == member.BoardId).FirstOrDefault());
             }
 
             return Ok(JsonConvert.SerializeObject(board));
