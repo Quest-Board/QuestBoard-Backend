@@ -43,6 +43,19 @@ namespace QuestBoard.Controllers
             }
 
             user.Points += modification.Points;
+
+            if (user.Points / 1000 > 0 && user.Rank != UserRank.King)
+            {
+                if(user.Rank == UserRank.Squire)
+                {
+                    user.Rank = UserRank.Knight;
+                }
+                else
+                {
+                    user.Rank = UserRank.King;
+                }
+            }
+
             _context.SaveChanges();
 
             return Ok(new { points = user.Points });

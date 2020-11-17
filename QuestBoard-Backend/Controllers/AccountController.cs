@@ -76,7 +76,7 @@ namespace QuestBoard_Backend.Controllers
                 return BadRequest(model);
             }
 
-            User user = new User { UserName = model.Email, Email = model.Email };
+            User user = new User { UserName = model.Email, Email = model.Email, Rank = UserRank.Squire };
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
