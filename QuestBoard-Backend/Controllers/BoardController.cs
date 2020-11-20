@@ -147,6 +147,7 @@ namespace QuestBoard.Controllers
             };
 
             board.Columns.Append(ToAdd);
+            _context.Columns.Add(ToAdd);
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
@@ -205,6 +206,7 @@ namespace QuestBoard.Controllers
             };
 
             column.Cards.Add(toAdd);
+            _context.Cards.Add(toAdd);
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
