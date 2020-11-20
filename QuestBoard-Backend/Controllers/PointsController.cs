@@ -26,16 +26,13 @@ namespace QuestBoard.Controllers
         {
             [Required]
             public int Points { get; set; }
-
-            [Required]
-            public string Email { get; set; }
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> AddAsync([FromBody]PointsModification modification)
         {
-            User user = await _userManager.FindByEmailAsync(modification.Email);
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -65,7 +62,7 @@ namespace QuestBoard.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveAsync([FromBody] PointsModification modification)
         {
-            User user = await _userManager.FindByEmailAsync(modification.Email);
+            User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
             if (user == null)
             {
