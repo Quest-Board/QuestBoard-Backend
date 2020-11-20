@@ -210,22 +210,80 @@ namespace QuestBoard.Controllers
             return Ok(new { Success = true });
         }
 
+        public class CardsInfo
+        {
+            public string Id { get; set; }
+
+            public string Description { get; set; }
+            public string Label { get; set; }
+
+            public string Title { get; set; }
+        }
+
+        public class ColumnInfo
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public string Label { get; set; }
+            public ICollection<CardsInfo> Cards { get; set; }
+        }
+
+        public class BoardInfo
+        {
+            public string Name { get; set; }
+            public ICollection<ColumnInfo> Lanes { get; set; }
+
+            public string Id { get; set; }
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetBoardsAsync()
         {
             User user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
 
-            IEnumerable<MemberOf> memberOf = _context.MemberOf.Where(m => m.MemberID == user.Id);
+            IEnumerable<int> memberOfBoards = _context.MemberOf.Where(m => m.MemberID == user.Id).Select(m => m.BoardId).ToList();
 
-            IEnumerable<Board> board = _context.Boards.Where(b => b.Owner == user);
+            IEnumerable<Board> boardas = _context.Boards.Where(b => b.Owner == user || memberOfBoards.Contains(b.Id)).ToList();
 
-            foreach (MemberOf member in memberOf)
+            ICollection<BoardInfo> boards = new List<BoardInfo>();
+
+            foreach (Board b in boardas)
             {
-                board.Append(_context.Boards.Where(b => b.Id == member.BoardId).FirstOrDefault());
+                BoardInfo boardInfo = new BoardInfo
+                {
+                    Name = b.BoardName,
+                    Id = b.Id.ToString(),
+                    Lanes = new List<ColumnInfo>(),
+                };
+
+                foreach (Column c in b.Columns)
+                {
+                    ColumnInfo column = new ColumnInfo
+                    {
+                        Id = c.ID.ToString(),
+                        Label = "",
+                        Title = c.Category,
+                        Cards = new List<CardsInfo>(),
+                    };
+
+                    foreach (Card ca in c.Cards)
+                    {
+                        CardsInfo info = new CardsInfo
+                        {
+                            Description = ca.Description,
+                            Id = ca.ID.ToString(),
+                            Title = ca.Title,
+                        };
+
+                        column.Cards.Add(info);
+                    }
+
+                    boardInfo.Lanes.Add(column);
+                }
             }
 
-            return Ok(JsonConvert.SerializeObject(board));
+            return Ok(boards);
         }
 
         [Authorize]
