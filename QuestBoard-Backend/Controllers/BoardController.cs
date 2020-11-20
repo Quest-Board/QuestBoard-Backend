@@ -192,9 +192,9 @@ namespace QuestBoard.Controllers
 
             MemberOf memberOf = _context.MemberOf.ToList().Where(m => m.MemberID == user.Id && m.BoardId == board.Id).FirstOrDefault();
 
-            if (memberOf == null)
+            if (memberOf == null && board.Owner.Id != user.Id)
             {
-                return Forbid("You are not a member of this board");
+                return Forbid();
             }
 
             User Assignee = await _userManager.FindByEmailAsync(card.AssigneeEmail);
@@ -325,6 +325,30 @@ namespace QuestBoard.Controllers
             }
 
             return Ok(JsonConvert.SerializeObject(board));
+        }
+
+        public class CardMovement
+        {
+            public int CardID { get; set; }
+            public int NewColumnID { get; set; }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> MoveCardAsync([FromBody]CardMovement cardMovement) 
+        {
+            Column NewColumn = await _context.Columns.FindAsync(cardMovement.NewColumnID);
+            Card ToMove = await _context.Cards.FindAsync(cardMovement.CardID);
+            Column OldColumn = await _context.Columns.FindAsync(ToMove.ColumnId);
+
+            ToMove.ColumnId = NewColumn.ID;
+
+            OldColumn.Cards.Remove(ToMove);
+            NewColumn.Cards.Append(ToMove);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { card = ToMove.ID, column = NewColumn.ID });
         }
     }
 }
