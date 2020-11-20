@@ -263,6 +263,8 @@ namespace QuestBoard.Controllers
                     Lanes = new List<ColumnInfo>(),
                 };
 
+                int totalCount = 0;
+
                 b.Columns = _context.Columns.Where(col => col.BoardId == b.Id).ToList();
 
                 foreach (Column c in b.Columns)
@@ -270,7 +272,6 @@ namespace QuestBoard.Controllers
                     ColumnInfo column = new ColumnInfo
                     {
                         Id = c.ID.ToString(),
-                        Label = "",
                         Title = c.Category,
                         Cards = new List<CardsInfo>(),
                     };
@@ -287,10 +288,18 @@ namespace QuestBoard.Controllers
                         };
 
                         column.Cards.Add(info);
+                        totalCount++;
                     }
 
                     boardInfo.Lanes.Add(column);
                 }
+
+                foreach (ColumnInfo c in boardInfo.Lanes)
+                {
+                    c.Label = string.Format("{0}/{1}", c.Cards.Count, totalCount);
+                }
+
+                boards.Add(boardInfo);
             }
 
             return Ok(boards);
