@@ -8,6 +8,8 @@ namespace QuestBoard.Models
         [Key]
         public int ID { get; set; }
         public string Category { get; set; }
+
+        public int BoardId { get; set; }
         public ICollection<Card> Cards { get; set; }
     }
 }

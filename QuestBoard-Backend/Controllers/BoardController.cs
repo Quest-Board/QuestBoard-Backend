@@ -144,10 +144,11 @@ namespace QuestBoard.Controllers
             Column ToAdd = new Column
             {
                 Category = column.Category,
+                BoardId = board.Id,
             };
 
-            board.Columns.Append(ToAdd);
             _context.Columns.Add(ToAdd);
+            board.Columns.Append(ToAdd);
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
@@ -202,11 +203,14 @@ namespace QuestBoard.Controllers
             {
                 Description = card.Description,
                 Title = card.Title,
-                Assigned = Assignee
+                Assigned = Assignee,
+                ColumnId = card.ColumnID,
             };
 
-            column.Cards.Add(toAdd);
             _context.Cards.Add(toAdd);
+            await _context.SaveChangesAsync();
+
+            column.Cards.Add(toAdd);
             await _context.SaveChangesAsync();
 
             return Ok(new { Success = true });
@@ -259,6 +263,8 @@ namespace QuestBoard.Controllers
                     Lanes = new List<ColumnInfo>(),
                 };
 
+                b.Columns = _context.Columns.Where(col => col.BoardId == b.Id).ToList();
+
                 foreach (Column c in b.Columns)
                 {
                     ColumnInfo column = new ColumnInfo
@@ -268,6 +274,8 @@ namespace QuestBoard.Controllers
                         Title = c.Category,
                         Cards = new List<CardsInfo>(),
                     };
+
+                    c.Cards = _context.Cards.Where(card => card.ColumnId == c.ID).ToList();
 
                     foreach (Card ca in c.Cards)
                     {
