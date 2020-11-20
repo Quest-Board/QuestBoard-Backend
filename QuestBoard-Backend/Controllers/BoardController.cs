@@ -350,5 +350,23 @@ namespace QuestBoard.Controllers
 
             return Ok(new { card = ToMove.ID, column = NewColumn.ID });
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteCardAsync(int CardID)
+        {
+            Card ToDelete = await _context.Cards.FindAsync(CardID);
+
+            Column ToRemoveFrom = await _context.Columns.FindAsync(ToDelete.ColumnId);
+
+            ToRemoveFrom.Cards.Remove(ToDelete);
+
+            _context.Cards.Remove(ToDelete);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Success = true });
+        }
     }
 }
